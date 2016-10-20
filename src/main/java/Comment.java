@@ -23,5 +23,11 @@ class Comment {
         upVoteCount--;
     }
     
-    public
+    public void incrementDownVoteCount() {
+        downVoteCount++;
+    } 
+    
+    public void decrementDownVoteCount() {
+        downVoteCount--;
+    } 
 }

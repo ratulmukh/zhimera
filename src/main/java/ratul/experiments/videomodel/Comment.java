@@ -1,4 +1,4 @@
-package ratul.myexperiments;
+package ratul.myexperiments.videomodel;
 
 class Comment {
     private final String commentContent;

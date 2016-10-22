@@ -8,16 +8,32 @@ import akka.cluster.ClusterEvent.CurrentClusterState;
 import akka.cluster.ClusterEvent.MemberUp;
 import akka.cluster.Member;
 import akka.cluster.MemberStatus;
-
+import akka.cluster.singleton.ClusterSingletonManagerSettings;
+import akka.cluster.singleton.ClusterSingletonProxySettings;
+import akka.actor.Props;
+import akka.actor.PoisonPill;
 
 public class VideoContentStorageNode extends UntypedActor {
 
   Cluster cluster = Cluster.get(getContext().system());
+  
+  final ClusterSingletonManagerSettings settings =
+  ClusterSingletonManagerSettings.create(getContext().system()).withRole("video-content-storage-node");
+  
+  ClusterSingletonProxySettings proxySettings =
+    ClusterSingletonProxySettings.create(getContext().system()).withRole("worker");
+
+
 
   //subscribe to cluster changes, MemberUp
   @Override
   public void preStart() {
     cluster.subscribe(getSelf(), MemberUp.class);
+    
+    context().system().actorOf(ClusterSingletonManager.props(
+      Props.create(VideoStorageCoordinator.class), new PoisonPill(), settings), "video-storage-coordinator");
+      
+      context().system().actorOf(ClusterSingletonProxy.props("/user/video-storage-coordinator", proxySettings), "video-storage-coordinator-proxy");
   }
 
   //re-subscribe when restart

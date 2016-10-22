@@ -8,7 +8,7 @@ import akka.actor.Props;
 
 public class ClusterMgr {
 
-  public static void bringUPNode(String[] args) {
+  public static void bringUpNode(String[] args) {
     // Override the configuration of the port when specified as program argument
     final String port = args.length > 0 ? args[0] : "0";
     final Config config = ConfigFactory.parseString("akka.remote.netty.tcp.port=" + port).
@@ -23,10 +23,10 @@ public class ClusterMgr {
   
   public static void main(String[] args) {
     // starting 2 frontend nodes and 3 backend nodes
-    bringUPNode(new String[] { "2551" });
-    bringUPNode(new String[] { "2552" });
-    bringUPNode(new String[] { "2553" });
-    bringUPNode(new String[] { "2554" });
+    bringUpNode(new String[] { "2551" });
+    bringUpNode(new String[] { "2552" });
+    bringUpNode(new String[] { "2553" });
+    bringUpNode(new String[] { "2554" });
     
   }
 

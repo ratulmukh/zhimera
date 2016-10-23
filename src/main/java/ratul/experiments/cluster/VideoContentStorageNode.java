@@ -8,7 +8,9 @@ import akka.cluster.ClusterEvent.CurrentClusterState;
 import akka.cluster.ClusterEvent.MemberUp;
 import akka.cluster.Member;
 import akka.cluster.MemberStatus;
+import akka.cluster.singleton.ClusterSingletonManager;
 import akka.cluster.singleton.ClusterSingletonManagerSettings;
+import akka.cluster.singleton.ClusterSingletonProxy;
 import akka.cluster.singleton.ClusterSingletonProxySettings;
 import akka.actor.Props;
 import akka.actor.PoisonPill;
@@ -21,7 +23,7 @@ public class VideoContentStorageNode extends UntypedActor {
   ClusterSingletonManagerSettings.create(getContext().system()).withRole("video-content-storage-node");
   
   ClusterSingletonProxySettings proxySettings =
-    ClusterSingletonProxySettings.create(getContext().system()).withRole("worker");
+    ClusterSingletonProxySettings.create(getContext().system()).withRole("video-content-storage-node");
 
 
 
@@ -31,9 +33,12 @@ public class VideoContentStorageNode extends UntypedActor {
     cluster.subscribe(getSelf(), MemberUp.class);
     
     context().system().actorOf(ClusterSingletonManager.props(
-      Props.create(VideoStorageCoordinator.class), new PoisonPill(), settings), "video-storage-coordinator");
+      Props.create(VideoStorageCoordinator.class), new End(), settings), "video-storage-coordinator");
       
       context().system().actorOf(ClusterSingletonProxy.props("/user/video-storage-coordinator", proxySettings), "video-storage-coordinator-proxy");
+  }
+  
+  public static class End {
   }
 
   //re-subscribe when restart

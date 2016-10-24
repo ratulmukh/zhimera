@@ -1,10 +1,10 @@
 package ratul.myexperiments.videomodel;
 
-public class Chunk {
+public class VideoChunk {
     private int seqNo;
     byte[] data;
     
-    public Chunk(int seqNo, byte[] data) {
+    public VideoChunk(int seqNo, byte[] data) {
         this.seqNo = seqNo;
         this.data = data;
     }

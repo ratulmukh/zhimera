@@ -3,9 +3,9 @@ package ratul.myexperiments.videomodel;
 import java.util.List;
 
 class VideoContent {
-    private List<Chunk> chunkList;
+    private List<VideoChunk> chunkList;
     
-    public VideoContent(List<Chunk> chunkList) {
+    public VideoContent(List<VideoChunk> chunkList) {
         this.chunkList = chunkList;
     }
 } 

@@ -6,6 +6,17 @@ import com.typesafe.config.ConfigFactory;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 
+import ratul.myexperiments.cluster.ClusterMsgs.*;
+import akka.actor.*;
+import scala.concurrent.ExecutionContext;
+import scala.concurrent.duration.Duration;
+import scala.concurrent.duration.FiniteDuration;
+import akka.dispatch.OnSuccess;
+import akka.util.Timeout;
+import static akka.pattern.Patterns.ask;
+import java.util.concurrent.TimeUnit;
+
+
 public class ClusterMgr {
 
   public static void bringUpNode(String[] args) {
@@ -17,7 +28,19 @@ public class ClusterMgr {
 
     ActorSystem system = ActorSystem.create("ClusterSystem", config);
 
-    system.actorOf(Props.create(VideoContentStorageNode.class), "video-content-storage-node");
+    final ActorRef node = system.actorOf(Props.create(VideoContentStorageNode.class), "video-content-storage-node");
+    final ActorRef client = system.actorOf(Props.create(VideoStorageClient.class), "video-storage-client");
+    
+    
+  final FiniteDuration interval = Duration.create(2, TimeUnit.SECONDS);
+    final Timeout timeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
+    final ExecutionContext ec = system.dispatcher();
+    
+    ask(client, new Hello(), timeout).onSuccess(new OnSuccess<Object>() {
+          public void onSuccess(Object result) {
+            System.out.println(result);
+          }
+        }, ec);
 
   }
   

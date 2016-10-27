@@ -36,9 +36,9 @@ public class ClusterMgr {
     final Timeout timeout = new Timeout(Duration.create(5, TimeUnit.SECONDS));
     final ExecutionContext ec = system.dispatcher();
     
-    ask(client, new Hello(), timeout).onSuccess(new OnSuccess<Object>() {
+    ask(client, new ReferenceToNodeActor(node), timeout).onSuccess(new OnSuccess<Object>() {
           public void onSuccess(Object result) {
-            System.out.println(result);
+            System.out.println("Response received");
           }
         }, ec);
 

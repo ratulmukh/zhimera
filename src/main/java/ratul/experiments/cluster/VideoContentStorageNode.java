@@ -51,6 +51,7 @@ public class VideoContentStorageNode extends UntypedActor {
   public void onReceive(Object message) {
     if (message instanceof Hello) {
       Hello job = (Hello) message;
+      System.out.println("Hello msg received");
       getSender().tell(new HelloResult(), getSelf());
     }
     else {

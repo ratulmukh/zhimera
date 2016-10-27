@@ -13,6 +13,14 @@ public interface ClusterMsgs {
         
     };
     
+    public static class ReferenceToNodeActor implements Serializable {
+        public final ActorRef node;
+        public ReferenceToNodeActor(ActorRef node) {
+            this.node = node;
+        }
+    };
+    
+    
     public static class HelloResult implements Serializable {
         
     };

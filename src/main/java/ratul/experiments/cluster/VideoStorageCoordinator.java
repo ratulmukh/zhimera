@@ -63,7 +63,9 @@ public class VideoStorageCoordinator extends UntypedActor {
           backends.put(member.address().toString(), member);
         }
       }
-
+    } else if (message instanceof Hello) {
+      Hello job = (Hello) message;
+      System.out.println("Hello msg received by coordinator");
     } else {
       unhandled(message);
     }

@@ -2,7 +2,7 @@ package ratul.myexperiments.cluster;
 
 import ratul.myexperiments.cluster.ClusterMsgs.*;
 
-import akka.actor.UntypedActor;
+import akka.actor.*;
 import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent.CurrentClusterState;
 import akka.cluster.ClusterEvent.MemberUp;
@@ -25,6 +25,7 @@ public class VideoContentStorageNode extends UntypedActor {
   ClusterSingletonProxySettings proxySettings =
     ClusterSingletonProxySettings.create(getContext().system()).withRole("video-content-storage-node");
 
+  ActorRef videoStorageCoordinator;
 
 
   //subscribe to cluster changes, MemberUp
@@ -35,7 +36,7 @@ public class VideoContentStorageNode extends UntypedActor {
     context().system().actorOf(ClusterSingletonManager.props(
       Props.create(VideoStorageCoordinator.class), new End(), settings), "video-storage-coordinator");
       
-      context().system().actorOf(ClusterSingletonProxy.props("/user/video-storage-coordinator", proxySettings), "video-storage-coordinator-proxy");
+      videoStorageCoordinator = context().system().actorOf(ClusterSingletonProxy.props("/user/video-storage-coordinator", proxySettings), "video-storage-coordinator-proxy");
   }
   
   public static class End {
@@ -51,7 +52,8 @@ public class VideoContentStorageNode extends UntypedActor {
   public void onReceive(Object message) {
     if (message instanceof Hello) {
       Hello job = (Hello) message;
-      System.out.println("Hello msg received");
+      videoStorageCoordinator.tell(new Hello(), getSelf());
+      System.out.println("Hello msg received and forwarded to coordinator");
       getSender().tell(new HelloResult(), getSelf());
     }
     else {

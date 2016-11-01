@@ -8,25 +8,20 @@ import java.util.concurrent.TimeUnit;
 
 public class VideoStorageClient extends UntypedActor {
 
-
+  ActorRef referenceToNodeActor;
 
 
   @Override
   public void onReceive(Object message) {
-    if (message instanceof Hello) {
-      Hello job = (Hello) message;
-      System.out.println("Hello msg received");
-      getSender().tell(new HelloResult(), getSelf());
-      //getContext().actorSelection("/user/video-storage-coordinator-proxy").tell(new HelloResult(), getSelf());
-    }
-    else if (message instanceof ReferenceToNodeActor) {
-      ReferenceToNodeActor referenceToNodeActor = (ReferenceToNodeActor) message;
+    if (message instanceof ReferenceToNodeActor) {
+      referenceToNodeActor = ((ReferenceToNodeActor) message).node;
       System.out.println("ReferenceToNodeActor msg received");
-      getSender().tell(new HelloResult(), getSelf());
-      referenceToNodeActor.node.tell(new Hello(), getSelf());
-      //getContext().actorSelection("/user/video-storage-coordinator-proxy").tell(new HelloResult(), getSelf());
-    }
-    else {
+      getContext().system().scheduler().scheduleOnce(Duration.create(15, TimeUnit.SECONDS),
+        getSelf(), new VideoStorageRequest(), getContext().system().dispatcher(), null);
+    } else if (message instanceof VideoStorageRequest) {
+      referenceToNodeActor.tell(message, getSelf());
+
+    } else {
       unhandled(message);
     }
   }

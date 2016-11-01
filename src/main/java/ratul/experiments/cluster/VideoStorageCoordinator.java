@@ -63,9 +63,17 @@ public class VideoStorageCoordinator extends UntypedActor {
           backends.put(member.address().toString(), member);
         }
       }
-    } else if (message instanceof Hello) {
-      Hello job = (Hello) message;
-      System.out.println("Hello msg received by coordinator");
+        
+    } else if(message instanceof VideoStorageRequest) {
+      System.out.println("VideoStorageRequest msg received by coordinator");
+      String nodePath1 = (backends.keySet().toArray())[0] + "/user/video-content-storage-node";
+      String nodePath2 = (backends.keySet().toArray())[1] + "/user/video-content-storage-node";
+      ActorSelection node1 = getContext().actorSelection(nodePath1);
+      ActorSelection node2 = getContext().actorSelection(nodePath2);
+      System.out.println("Selected storage nodes are: " + nodePath1 + " and " + nodePath2);
+      sender().tell(new VideoStorageDestination(new ArrayList<ActorSelection>(Arrays.asList(node1, node2))), getSelf());
+
+      
     } else {
       unhandled(message);
     }

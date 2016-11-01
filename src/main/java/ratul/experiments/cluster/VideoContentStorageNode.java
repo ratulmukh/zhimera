@@ -50,13 +50,10 @@ public class VideoContentStorageNode extends UntypedActor {
 
   @Override
   public void onReceive(Object message) {
-    if (message instanceof Hello) {
-      Hello job = (Hello) message;
-      videoStorageCoordinator.tell(new Hello(), getSelf());
-      System.out.println("Hello msg received and forwarded to coordinator");
-      getSender().tell(new HelloResult(), getSelf());
-    }
-    else {
+    if(message instanceof VideoStorageRequest) {
+      System.out.println("VideoStorageRequest received and forwarded to coordinator");
+      videoStorageCoordinator.forward(message, getContext());
+    }else {
       unhandled(message);
     }
   }

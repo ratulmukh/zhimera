@@ -4,7 +4,7 @@ import java.io.Serializable;
 import ratul.myexperiments.videomodel.*;
 import java.util.UUID;
 import java.util.List;
-import akka.actor.ActorRef;
+import akka.actor.*;
 
 
 public interface ClusterMsgs {
@@ -29,12 +29,12 @@ public interface ClusterMsgs {
         
     };
     
-    public static class VideoStorageReserved implements Serializable {
+    public static class VideoStorageDestination implements Serializable {
         public final UUID videoId;
-        public final List<ActorRef> videoStorageNodes;
+        public final List<ActorSelection> videoStorageNodes;
         
-        public VideoStorageReserved(UUID videoId, List<ActorRef> videoStorageNodes) {
-            this.videoId = videoId;
+        public VideoStorageDestination(List<ActorSelection> videoStorageNodes) {
+            this.videoId = UUID.randomUUID();
             this.videoStorageNodes = videoStorageNodes;
         }
     };

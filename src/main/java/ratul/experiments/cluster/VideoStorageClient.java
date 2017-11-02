@@ -1,6 +1,6 @@
-package ratul.myexperiments.cluster;
+package ratul.experiments.cluster;
 
-import ratul.myexperiments.cluster.ClusterMsgs.*;
+import ratul.experiments.cluster.ClusterMsgs.*;
 import akka.actor.*;
 import scala.concurrent.duration.Duration;
 import java.util.concurrent.TimeUnit;

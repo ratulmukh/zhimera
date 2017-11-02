@@ -1,6 +1,6 @@
-package ratul.myexperiments.cluster;
+package ratul.experiments.cluster;
 
-import ratul.myexperiments.cluster.ClusterMsgs.*;
+import ratul.experiments.cluster.ClusterMsgs.*;
 import akka.actor.*;
 import java.util.*;
 import akka.cluster.*;

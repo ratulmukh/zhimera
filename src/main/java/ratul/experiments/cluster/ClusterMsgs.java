@@ -1,7 +1,7 @@
-package ratul.myexperiments.cluster;
+package ratul.experiments.cluster;
 
 import java.io.Serializable;
-import ratul.myexperiments.videomodel.*;
+import ratul.experiments.videomodel.*;
 import java.util.UUID;
 import java.util.List;
 import akka.actor.*;

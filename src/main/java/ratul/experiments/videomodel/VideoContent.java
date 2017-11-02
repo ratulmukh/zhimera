@@ -1,4 +1,4 @@
-package ratul.myexperiments.videomodel;
+package ratul.experiments.videomodel;
 
 import java.util.List;
 

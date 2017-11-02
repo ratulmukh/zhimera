@@ -1,4 +1,4 @@
-package ratul.myexperiments.cluster;
+package ratul.experiments.cluster;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -6,7 +6,7 @@ import com.typesafe.config.ConfigFactory;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 
-import ratul.myexperiments.cluster.ClusterMsgs.*;
+import ratul.experiments.cluster.ClusterMsgs.*;
 import akka.actor.*;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
